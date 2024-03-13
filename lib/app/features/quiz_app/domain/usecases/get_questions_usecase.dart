@@ -4,18 +4,17 @@ import 'package:quiz_app/app/features/quiz_app/data/models/questions_model.dart'
 import 'package:quiz_app/app/features/quiz_app/domain/repositories/questions_repositorie.dart';
 
 abstract class GetQuestionsUsecase {
-  Future<Either<Failure, QuestionsModel>> call(
+  Future<Either<Failure, List<QuestionModel>>> call(
       {required int numberOfQuestions});
 }
 
-class GetQuestionUsecaseImpl implements GetQuestionsUsecase {
+class GetQuestionsUsecaseImpl implements GetQuestionsUsecase {
   final QuestionsRepositorie repo;
 
-  GetQuestionUsecaseImpl(this.repo);
+  GetQuestionsUsecaseImpl({required this.repo});
   @override
-  Future<Either<Failure, QuestionsModel>> call(
-      {required int numberOfQuestions}) {
-    // TODO: implement call
-    throw UnimplementedError();
+  Future<Either<Failure, List<QuestionModel>>> call(
+      {required int numberOfQuestions}) async {
+    return await repo.getQuestions(numberOfQuestions: numberOfQuestions);
   }
 }

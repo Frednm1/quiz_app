@@ -9,16 +9,19 @@ import 'package:quiz_app/app/features/quiz_app/domain/repositories/questions_rep
 
 class QuestionsRepositorieImpl implements QuestionsRepositorie {
   final ApiDatasource api;
-  QuestionsRepositorieImpl(this.api);
+  QuestionsRepositorieImpl({required this.api});
   @override
-  Future<Either<Failure, QuestionsModel>> getQuestions(
+  Future<Either<Failure, List<QuestionModel>>> getQuestions(
       {required int numberOfQuestions}) async {
     try {
       final response =
           await api.getQuestions(numberOfQuestions: numberOfQuestions);
       final decode = jsonDecode(response.body);
-      final data = QuestionsModel.fromJson(decode['results']);
-      return Right(data);
+      List<QuestionModel> list = [];
+      decode['results'].forEach((value) {
+        list.add(QuestionModel.fromJson(value));
+      });
+      return Right(list);
     } on ServerException {
       return Left(ServerFailure());
     }

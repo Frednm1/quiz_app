@@ -10,7 +10,7 @@ abstract class ApiDatasource {
 
 class ApiDatasourceImpl implements ApiDatasource {
   final HttpClient client;
-  ApiDatasourceImpl(this.client);
+  ApiDatasourceImpl({required this.client});
   @override
   Future<Response> getQuestions({required int numberOfQuestions}) async {
     var data = await client.get(endpoint: '/api.php', queryParameters: {
