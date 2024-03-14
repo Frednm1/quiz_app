@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/app/features/quiz_app/presentation/ui/pages/config_page.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
@@ -24,7 +25,7 @@ class StartPage extends StatelessWidget {
           const Spacer(),
           Image.asset(
             'assets/images/doubt.png',
-            width: MediaQuery.of(context).size.width * .8,
+            height: 275,
           ),
           const Spacer(),
           const Padding(
@@ -35,7 +36,11 @@ class StartPage extends StatelessWidget {
           ),
           const Spacer(),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const ConfigPage();
+              }));
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).focusColor,
               fixedSize: Size(MediaQuery.of(context).size.width * .8, 45),
@@ -43,7 +48,7 @@ class StartPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(7),
               ),
             ),
-            child: Text('Continue'),
+            child: const Text('Continue'),
           ),
           const Spacer(
             flex: 2,
