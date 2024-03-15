@@ -12,10 +12,16 @@ class QuestionsRepositorieImpl implements QuestionsRepositorie {
   QuestionsRepositorieImpl({required this.api});
   @override
   Future<Either<Failure, List<QuestionModel>>> getQuestions(
-      {required int numberOfQuestions}) async {
+      {required int numberOfQuestions,
+      String? difficulty,
+      int? category,
+      String? type}) async {
     try {
-      final response =
-          await api.getQuestions(numberOfQuestions: numberOfQuestions);
+      final response = await api.getQuestions(
+          numberOfQuestions: numberOfQuestions,
+          category: category,
+          difficulty: difficulty,
+          type: type);
       final decode = jsonDecode(response.body);
       List<QuestionModel> list = [];
       decode['results'].forEach((value) {

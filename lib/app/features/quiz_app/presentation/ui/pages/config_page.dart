@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/app/features/quiz_app/presentation/ui/pages/quiz_page.dart';
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({super.key});
@@ -8,6 +9,12 @@ class ConfigPage extends StatefulWidget {
 }
 
 class _ConfigPageState extends State<ConfigPage> {
+  List<bool> toggleButtonsList = <bool>[false, false, true];
+  final _formKey = GlobalKey<FormState>();
+  final numberOfQuestionsController = TextEditingController();
+  String questionDifficultyController = 'random';
+  int? questionCategoryController;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,14 +52,26 @@ class _ConfigPageState extends State<ConfigPage> {
                 height: 20,
               ),
               Form(
+                key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('How many questions do you want to answer?'),
                     TextFormField(
                       autocorrect: true,
+                      controller: numberOfQuestionsController,
                       onTapOutside: (value) {
                         FocusScope.of(context).unfocus();
+                      },
+                      validator: (value) {
+                        if (value?.isEmpty == true || value == null) {
+                          return 'Fill in the field above to proceed';
+                        } else if (int.parse(value) <= 0 ||
+                            int.parse(value) > 50) {
+                          return 'Enter a number between 1 and 50';
+                        } else {
+                          return null;
+                        }
                       },
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
@@ -71,7 +90,7 @@ class _ConfigPageState extends State<ConfigPage> {
                           fontSize: 14,
                           height: 1,
                         ),
-                        value: 'random',
+                        value: questionDifficultyController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           constraints: BoxConstraints(maxHeight: 60),
@@ -95,7 +114,13 @@ class _ConfigPageState extends State<ConfigPage> {
                             child: Text('Hard'),
                           ),
                         ],
-                        onChanged: (value) {}),
+                        onChanged: (value) {
+                          if (value != null) {
+                            setState(() {
+                              questionDifficultyController = value;
+                            });
+                          }
+                        }),
                     const SizedBox(
                       height: 20,
                     ),
@@ -105,7 +130,7 @@ class _ConfigPageState extends State<ConfigPage> {
                           fontSize: 14,
                           height: 1,
                         ),
-                        value: null,
+                        value: questionCategoryController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           constraints: BoxConstraints(maxHeight: 60),
@@ -197,23 +222,81 @@ class _ConfigPageState extends State<ConfigPage> {
                             child: Text('Animals'),
                           ),
                         ],
-                        onChanged: (value) {}),
+                        onChanged: (value) {
+                          questionCategoryController = value;
+                        }),
                     const SizedBox(
-                      height: 20,
+                      height: 40,
                     ),
+                    const Text('Select the type.'),
                     ToggleButtons(
-                        fillColor: Theme.of(context).primaryColorLight,
-                        children: [
-                          Text('True or False'),
-                          Text('Multiple choise')
-                        ],
-                        isSelected: [
-                          false,
-                          false
-                        ]),
+                      fillColor: Theme.of(context).primaryColorLight,
+                      isSelected: toggleButtonsList,
+                      borderRadius: BorderRadius.circular(7),
+                      selectedColor: Colors.black,
+                      constraints: const BoxConstraints(
+                        minWidth: 80,
+                        minHeight: 40,
+                      ),
+                      onPressed: (bid) {
+                        setState(() {
+                          toggleButtonsList = List.from([false, false, false]);
+                          toggleButtonsList[bid] = true;
+                        });
+                      },
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: Text('True or False'),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: Text('Multiple Choice'),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: Text('Any'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState?.validate() == true) {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) {
+                            return QuizPage(
+                              numberOfQuestions: int.parse(
+                                  numberOfQuestionsController.value.text),
+                              category: questionCategoryController,
+                              difficulty:
+                                  questionDifficultyController == 'random'
+                                      ? null
+                                      : questionDifficultyController,
+                              type: toggleButtonsList[0]
+                                  ? 'boolean'
+                                  : toggleButtonsList[1]
+                                      ? 'multiple'
+                                      : null,
+                            );
+                          }));
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).focusColor,
+                        fixedSize:
+                            Size(MediaQuery.of(context).size.width - 60, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                      ),
+                      child: const Text('Start'),
+                    ),
                     const SizedBox(
                       height: 80,
-                    )
+                    ),
                   ],
                 ),
               )

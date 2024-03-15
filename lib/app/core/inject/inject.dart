@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:get_it/get_it.dart';
+import 'package:quiz_app/app/core/client/http_client.dart';
 import 'package:quiz_app/app/features/quiz_app/data/datasources/api_datasource.dart';
 import 'package:quiz_app/app/features/quiz_app/data/repositories/questions_repositorie.dart';
 import 'package:quiz_app/app/features/quiz_app/domain/repositories/questions_repositorie.dart';
@@ -11,7 +10,7 @@ class Inject {
     GetIt getIt = GetIt.instance;
 
     //client
-    getIt.registerLazySingleton(() => HttpClient());
+    getIt.registerLazySingleton<HttpClient>(() => HttpClientImpl());
     //datasources
 
     getIt.registerLazySingleton<ApiDatasource>(

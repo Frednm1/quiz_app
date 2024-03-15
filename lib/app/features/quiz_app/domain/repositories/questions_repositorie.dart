@@ -5,5 +5,8 @@ import 'package:quiz_app/app/features/quiz_app/data/models/questions_model.dart'
 abstract class QuestionsRepositorie {
   Future<Either<Failure, List<QuestionModel>>> getQuestions({
     required int numberOfQuestions,
+    String? difficulty,
+    int? category,
+    String? type,
   });
 }

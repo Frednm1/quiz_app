@@ -5,7 +5,10 @@ import 'package:quiz_app/app/features/quiz_app/domain/repositories/questions_rep
 
 abstract class GetQuestionsUsecase {
   Future<Either<Failure, List<QuestionModel>>> call(
-      {required int numberOfQuestions});
+      {required int numberOfQuestions,
+      String? difficulty,
+      int? category,
+      String? type});
 }
 
 class GetQuestionsUsecaseImpl implements GetQuestionsUsecase {
@@ -14,7 +17,14 @@ class GetQuestionsUsecaseImpl implements GetQuestionsUsecase {
   GetQuestionsUsecaseImpl({required this.repo});
   @override
   Future<Either<Failure, List<QuestionModel>>> call(
-      {required int numberOfQuestions}) async {
-    return await repo.getQuestions(numberOfQuestions: numberOfQuestions);
+      {required int numberOfQuestions,
+      String? difficulty,
+      int? category,
+      String? type}) async {
+    return await repo.getQuestions(
+        numberOfQuestions: numberOfQuestions,
+        category: category,
+        difficulty: difficulty,
+        type: type);
   }
 }

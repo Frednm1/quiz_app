@@ -43,7 +43,7 @@ class StartPage extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).focusColor,
-              fixedSize: Size(MediaQuery.of(context).size.width * .8, 45),
+              fixedSize: Size(MediaQuery.of(context).size.width - 60, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(7),
               ),

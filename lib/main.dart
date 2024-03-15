@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quiz_app/app/core/inject/inject.dart';
 import 'package:quiz_app/app/features/quiz_app/domain/usecases/get_questions_usecase.dart';
 import 'package:quiz_app/app/features/quiz_app/presentation/controllers/quiz_controller.dart';
 import 'package:get_it/get_it.dart';
 import 'package:quiz_app/app/features/quiz_app/presentation/ui/pages/start_page.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Inject.init();
   runApp(
     MultiProvider(
       providers: [

@@ -13,12 +13,23 @@ class QuizController extends ChangeNotifier {
   bool error = false;
   bool get haveError => error;
 
-  late List<QuestionModel> questions;
+  List<QuestionModel> questions = [];
   List<QuestionModel> get getQuestions => questions;
 
-  Future<void> fetchQuestions(int numberOfQuestions) async {
+  int index = 0;
+  int get currentIndex => index;
+
+  Future<void> fetchQuestions(
+      {required int numberOfQuestions,
+      String? difficulty,
+      String? type,
+      int? category}) async {
     getQuestionsUsecase
-        .call(numberOfQuestions: numberOfQuestions)
+        .call(
+            numberOfQuestions: numberOfQuestions,
+            category: category,
+            difficulty: difficulty,
+            type: type)
         .then((value) {
       value.fold((l) {
         setError(true);
@@ -27,6 +38,12 @@ class QuizController extends ChangeNotifier {
         notifyListeners();
       });
     });
+  }
+
+  setIndex(int value) {
+    index = value;
+
+    notifyListeners();
   }
 
   void setError(bool value) {
