@@ -56,14 +56,7 @@ class _QuizPageState extends State<QuizPage> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, i) {
                         return QuizPageview(
-                          question: controller.getQuestions[i].question!,
-                          difficulty: controller.getQuestions[i].difficulty!,
-                          incorrectAnswers:
-                              controller.getQuestions[i].incorrectAnswers!,
-                          category: controller.getQuestions[i].category!,
-                          type: controller.getQuestions[i].type!,
-                          correctAnswer:
-                              controller.getQuestions[i].correctAnswer!,
+                          question: controller.getQuestions[i],
                         );
                       },
                     ),
