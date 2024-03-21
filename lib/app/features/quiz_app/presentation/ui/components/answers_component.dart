@@ -20,16 +20,14 @@ class AnswersComponent extends StatefulWidget {
 }
 
 class _AnswersComponentState extends State<AnswersComponent> {
-  final random = Random();
-  int? correctPosition;
+  
   late AnswerController controller;
   @override
   void initState() {
-    super.initState();
-    correctPosition ??= correctPosition =
-        random.nextInt(widget.question.incorrectAnswers!.length + 1);
+    Provider.of<AnswerController>(context,listen: false).setCorrectPosition(widget.question.incorrectAnswers!.length );
     Provider.of<AnswerController>(context, listen: false)
         .setAnswers(widget.question.incorrectAnswers!.length + 1);
+    super.initState();
   }
 
   @override
@@ -43,7 +41,11 @@ class _AnswersComponentState extends State<AnswersComponent> {
             itemCount: widget.question.incorrectAnswers!.length + 1,
             shrinkWrap: true,
             itemBuilder: (context, i) {
-              if (i == correctPosition) {
+              print(controller.getCorrectPosition);
+              if(controller.getCorrectPosition == null){
+                return const Center(child: LinearProgressIndicator(),);
+              }else{
+                if (i == controller.getCorrectPosition) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: AnswerButton(
@@ -64,7 +66,7 @@ class _AnswersComponentState extends State<AnswersComponent> {
                       },
                       isActive: controller.getanswerSelected[i],
                       answer:
-                          widget.question.incorrectAnswers![correctPosition!],
+                          widget.question.incorrectAnswers![controller.getCorrectPosition!],
                     ),
                   );
                 } else {
@@ -79,6 +81,8 @@ class _AnswersComponentState extends State<AnswersComponent> {
                     ),
                   );
                 }
+              }
+              
               }
             });
   }

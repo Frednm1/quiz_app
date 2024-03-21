@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 
 class AnswerButton extends StatefulWidget {
   final void Function() action;
@@ -22,13 +23,14 @@ class _AnswerButtonState extends State<AnswerButton> {
     return ElevatedButton(
       onPressed: widget.action,
       style: ElevatedButton.styleFrom(
-        fixedSize: Size(MediaQuery.of(context).size.width - 60, 45),
+        padding: const EdgeInsets.symmetric(horizontal: 13,vertical: 5),
+        minimumSize: Size(MediaQuery.of(context).size.width - 60, 45),
         backgroundColor:
             widget.isActive ? Colors.indigo : Theme.of(context).primaryColor,
         shape: const RoundedRectangleBorder(),
       ),
       child: Text(
-        widget.answer,
+        parse(widget.answer).body?.innerHtml ?? '',
         style: const TextStyle(
           color: Colors.white,
           fontSize: 16,
