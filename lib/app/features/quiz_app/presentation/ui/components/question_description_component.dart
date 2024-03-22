@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 
 class QuestionDescriptionComponent extends StatelessWidget {
   final String title;
@@ -20,18 +21,20 @@ class QuestionDescriptionComponent extends StatelessWidget {
         ),
         children: [
           TextSpan(
-            text: '$title : ',
+            text: parse(title).body?.innerHtml ?? '',
             style: const TextStyle(
-              fontSize: 13,
+              fontSize: 11,
               fontWeight: FontWeight.w600,
               color: Colors.white,
+              height: .8,
             ),
           ),
           TextSpan(
-            text: content,
+            text: parse(content).body?.innerHtml ?? '',
             style: const TextStyle(
-              fontSize: 12,
+              fontSize: 11,
               color: Colors.white60,
+              height: .8,
             ),
           ),
         ],

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:quiz_app/app/features/quiz_app/presentation/controllers/quiz_controller.dart';
 import 'package:quiz_app/app/features/quiz_app/presentation/ui/components/quiz_pageview.dart';
+import 'package:quiz_app/app/features/quiz_app/presentation/ui/pages/finish_page.dart';
 
 class QuizPage extends StatefulWidget {
   final int numberOfQuestions;
@@ -25,6 +26,7 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   @override
   void initState() {
+    Provider.of<QuizController>(context,listen: false).clear();
     Provider.of<QuizController>(context, listen: false).fetchQuestions(
       numberOfQuestions: widget.numberOfQuestions,
       category: widget.category,
@@ -52,12 +54,11 @@ class _QuizPageState extends State<QuizPage> {
                       centerTitle: true,
                     ),
                     body: PageView.builder(
+                      controller: controller.pc,
                       itemCount: controller.getQuestions.length,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, i) {
-                        return QuizPageview(
-                          question: controller.getQuestions[i],
-                        );
+                        return const QuizPageview();
                       },
                     ),
                   );
