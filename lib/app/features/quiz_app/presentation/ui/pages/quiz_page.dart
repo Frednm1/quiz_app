@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import 'package:quiz_app/app/features/quiz_app/presentation/controllers/quiz_controller.dart';
 import 'package:quiz_app/app/features/quiz_app/presentation/ui/components/quiz_pageview.dart';
-import 'package:quiz_app/app/features/quiz_app/presentation/ui/pages/finish_page.dart';
 
 class QuizPage extends StatefulWidget {
   final int numberOfQuestions;
