@@ -57,7 +57,6 @@ class QuizController extends ChangeNotifier {
     for (int i = 0; i < questions.length; i++){
       answers.add([]);
       answers[i].add(questions[i].correctAnswer!);
-      print(questions[i].correctAnswer!);
       for(int j = 0; j < questions[i].incorrectAnswers!.length; j++){
           answers[i].add(questions[i].incorrectAnswers![j]);
       }

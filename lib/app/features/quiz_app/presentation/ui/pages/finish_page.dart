@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/app/features/quiz_app/presentation/controllers/quiz_controller.dart';
 
@@ -15,37 +16,70 @@ class _FinishPageState extends State<FinishPage> {
   Widget build(BuildContext context) {
     controller = Provider.of<QuizController>(context);
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 80,
-            ),
-            const Text('CONGRATULATIONS',style: TextStyle(
-              fontSize: 24,
-            ),),
-            const SizedBox(height: 20,),
-            Image.asset('assets/images/celebration.png',height: 275,),
-            const SizedBox(height: 20,),
-            Text("You completed your quiz and got ${controller.numberOfCorrectQuestions} questions out of ${controller.getQuestions.length} correct",style: const TextStyle(
-              fontSize: 20,
-            ),),
-            const SizedBox(height: 60,),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).focusColor,
-                  fixedSize: Size(MediaQuery.of(context).size.width - 60, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7),
-                  ),
-                ),
-                child: const Text('Restart'),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 80,
               ),
-          ],
+              const Text('CONGRATULATIONS',style: TextStyle(
+                fontSize: 24,
+              ),),
+              const SizedBox(height: 20,),
+              Image.asset('assets/images/celebration.png',height: 275,),
+              const SizedBox(height: 20,),
+
+              
+              Text("You completed your quiz and got ${controller.numberOfCorrectQuestions} questions out of ${controller.getQuestions.length} correct",style: const TextStyle(
+                fontSize: 20,
+              ),),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: controller.getQuestions.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, i){
+                return Row(
+                    children: [
+                      Container(
+                        height: 12,
+                        width: 12,
+                        margin: const EdgeInsets.symmetric(vertical: 20),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromRGBO(34, 39, 46, 1)
+                        ),
+                      ),
+                      const SizedBox(width: 20,),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .7,
+                        child: Text(parse(controller.getQuestions[i].question!).body!.innerHtml,maxLines: 2, )
+                      ),
+                      controller.getSelectedAnswers.contains(controller.getQuestions[i].correctAnswer!)
+                      ? const Icon(Icons.check,color: Colors.green,size: 18,) 
+                      : const Icon(Icons.close,color: Colors.red,size: 18,),
+                  ],
+                );
+              }),
+              
+              const SizedBox(height: 60,),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).focusColor,
+                    fixedSize: Size(MediaQuery.of(context).size.width - 60, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                  ),
+                  child: const Text('Restart'),
+                ),
+              const SizedBox(height: 80,),
+            ],
+          ),
         ),
       ),
     );

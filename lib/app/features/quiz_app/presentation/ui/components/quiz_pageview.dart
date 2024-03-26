@@ -28,12 +28,23 @@ class _QuizPageviewState extends State<QuizPageview> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Spacer(),
-            Text(
-              parse(controller.getQuestions[controller.currentIndex].question).body?.innerHtml ?? '',
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                height: 1.2,
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Theme.of(context).primaryColorLight,
+                  width: .7,
+
+                )
+              ),
+              child: Text(
+                parse(controller.getQuestions[controller.currentIndex].question).body?.innerHtml ?? '',
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  height: 1.2,
+                ),
               ),
             ),
             const SizedBox(
