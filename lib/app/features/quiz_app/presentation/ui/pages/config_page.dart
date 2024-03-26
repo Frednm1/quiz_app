@@ -14,6 +14,16 @@ class _ConfigPageState extends State<ConfigPage> {
   final numberOfQuestionsController = TextEditingController();
   String questionDifficultyController = 'random';
   int? questionCategoryController;
+  final ScrollController _controller = ScrollController();
+
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.jumpTo(_controller.position.maxScrollExtent);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +33,7 @@ class _ConfigPageState extends State<ConfigPage> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
+        controller: _controller,
         reverse: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),

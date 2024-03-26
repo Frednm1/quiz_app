@@ -57,6 +57,7 @@ class QuizController extends ChangeNotifier {
     for (int i = 0; i < questions.length; i++){
       answers.add([]);
       answers[i].add(questions[i].correctAnswer!);
+      print(questions[i].correctAnswer!);
       for(int j = 0; j < questions[i].incorrectAnswers!.length; j++){
           answers[i].add(questions[i].incorrectAnswers![j]);
       }
@@ -68,6 +69,8 @@ class QuizController extends ChangeNotifier {
     if(selectedAnswer != null){
       
       if(currentIndex == questions.length -1){
+        selectedAnswers.add(selectedAnswer!);
+        selectedAnswer = null;
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
           return const FinishPage();
         }));

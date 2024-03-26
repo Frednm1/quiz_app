@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/app/core/inject/inject.dart';
 import 'package:quiz_app/app/features/quiz_app/domain/usecases/get_questions_usecase.dart';
@@ -9,6 +10,18 @@ import 'package:quiz_app/app/features/quiz_app/presentation/ui/pages/start_page.
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Inject.init();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Color.fromRGBO(45, 51, 59, 1),
+      statusBarColor: Color.fromRGBO(45, 51, 59, 1),
+      statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light,
+    ),
+  );
+   SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(
     MultiProvider(
       providers: [
