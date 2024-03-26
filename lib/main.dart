@@ -12,8 +12,9 @@ void main() {
   Inject.init();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarIconBrightness: Brightness.light,
       systemNavigationBarColor: Color.fromRGBO(45, 51, 59, 1),
+      
       statusBarColor: Color.fromRGBO(45, 51, 59, 1),
       statusBarBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.light,
