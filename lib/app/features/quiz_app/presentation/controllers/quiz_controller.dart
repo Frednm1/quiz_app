@@ -110,8 +110,8 @@ class QuizController extends ChangeNotifier {
 
   int getNumberOfCorrectQuestions(){
     int correctAnswers = 0;
-    for(String response in selectedAnswers){
-      if(questions.any((element) => element.correctAnswer == response)){
+    for (var i = 0; i < questions.length; i++) {
+      if(questions[i].correctAnswer == selectedAnswers[i]){
         correctAnswers++;
       }
     }
@@ -126,6 +126,7 @@ class QuizController extends ChangeNotifier {
   void clear(){
     answers = [];
     questions = [];
+    selectedAnswers = [];
     index = 0;
   }
 
