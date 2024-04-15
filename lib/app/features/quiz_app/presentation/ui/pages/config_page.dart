@@ -16,7 +16,6 @@ class _ConfigPageState extends State<ConfigPage> {
   int? questionCategoryController;
   final ScrollController _controller = ScrollController();
 
-
   @override
   void initState() {
     super.initState();
@@ -96,209 +95,53 @@ class _ConfigPageState extends State<ConfigPage> {
                       height: 20,
                     ),
                     const Text('Select the difficult you whant.'),
-                    DropdownButtonFormField(
-                        style: const TextStyle(
-                          fontSize: 14,
-                          height: 1,
-                        ),
-                        value: questionDifficultyController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          constraints: BoxConstraints(maxHeight: 60),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                        ),
-                        items: const [
-                          DropdownMenuItem(
-                            value: 'random',
-                            child: Text('Random'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'easy',
-                            child: Text('Easy'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'medium',
-                            child: Text('Medium'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'hard',
-                            child: Text('Hard'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          if (value != null) {
-                            setState(() {
-                              questionDifficultyController = value;
-                            });
-                          }
-                        }),
+                    difficultyWidget(),
                     const SizedBox(
                       height: 20,
                     ),
                     const Text('Select the category.'),
-                    DropdownButtonFormField(
-                        style: const TextStyle(
-                          fontSize: 14,
-                          height: 1,
-                        ),
-                        value: questionCategoryController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          constraints: BoxConstraints(maxHeight: 60),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                        ),
-                        items: const [
-                          DropdownMenuItem(
-                            value: null,
-                            child: Text('Any category'),
-                          ),
-                          DropdownMenuItem(
-                            value: 9,
-                            child: Text('General Knowledge'),
-                          ),
-                          DropdownMenuItem(
-                            value: 10,
-                            child: Text('Entertainment Books'),
-                          ),
-                          DropdownMenuItem(
-                            value: 11,
-                            child: Text('Entertainment Film'),
-                          ),
-                          DropdownMenuItem(
-                            value: 12,
-                            child: Text('Entertainment Music'),
-                          ),
-                          DropdownMenuItem(
-                            value: 13,
-                            child: Text('Entertainment Musicals and Theatres'),
-                          ),
-                          DropdownMenuItem(
-                            value: 14,
-                            child: Text('Entertainment Television'),
-                          ),
-                          DropdownMenuItem(
-                            value: 15,
-                            child: Text('Entertainment Video Games'),
-                          ),
-                          DropdownMenuItem(
-                            value: 16,
-                            child: Text('Entertainment Board Games'),
-                          ),
-                          DropdownMenuItem(
-                            value: 17,
-                            child: Text('Science and Nature'),
-                          ),
-                          DropdownMenuItem(
-                            value: 18,
-                            child: Text('Science: Computers'),
-                          ),
-                          DropdownMenuItem(
-                            value: 19,
-                            child: Text('Science: Mathematics'),
-                          ),
-                          DropdownMenuItem(
-                            value: 20,
-                            child: Text('Mythology'),
-                          ),
-                          DropdownMenuItem(
-                            value: 21,
-                            child: Text('Sports'),
-                          ),
-                          DropdownMenuItem(
-                            value: 22,
-                            child: Text('Geography'),
-                          ),
-                          DropdownMenuItem(
-                            value: 22,
-                            child: Text('Geography'),
-                          ),
-                          DropdownMenuItem(
-                            value: 23,
-                            child: Text('History'),
-                          ),
-                          DropdownMenuItem(
-                            value: 24,
-                            child: Text('Politics'),
-                          ),
-                          DropdownMenuItem(
-                            value: 25,
-                            child: Text('Art'),
-                          ),
-                          DropdownMenuItem(
-                            value: 26,
-                            child: Text('Celebrities'),
-                          ),
-                          DropdownMenuItem(
-                            value: 27,
-                            child: Text('Animals'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          questionCategoryController = value;
-                        }),
+                    categoriesWidget(),
                     const SizedBox(
                       height: 40,
                     ),
                     const Text('Select the type.'),
-                    ToggleButtons(
-                      fillColor: Theme.of(context).primaryColorLight,
-                      isSelected: toggleButtonsList,
-                      borderRadius: BorderRadius.circular(7),
-                      selectedColor: Colors.black,
-                      constraints: const BoxConstraints(
-                        minWidth: 80,
-                        minHeight: 40,
-                      ),
-                      onPressed: (bid) {
-                        setState(() {
-                          toggleButtonsList = List.from([false, false, false]);
-                          toggleButtonsList[bid] = true;
-                        });
-                      },
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5),
-                          child: Text('True or False'),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5),
-                          child: Text('Multiple Choice'),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5),
-                          child: Text('Any'),
-                        ),
-                      ],
-                    ),
+                    typeWidget(),
                     const SizedBox(
                       height: 40,
                     ),
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState?.validate() == true) {
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) {
-                            return QuizPage(
-                              numberOfQuestions: int.parse(
-                                  numberOfQuestionsController.value.text),
-                              category: questionCategoryController,
-                              difficulty:
-                                  questionDifficultyController == 'random'
-                                      ? null
-                                      : questionDifficultyController,
-                              type: toggleButtonsList[0]
-                                  ? 'boolean'
-                                  : toggleButtonsList[1]
-                                      ? 'multiple'
-                                      : null,
-                            );
-                          }));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return QuizPage(
+                                  numberOfQuestions: int.parse(
+                                    numberOfQuestionsController.value.text,
+                                  ),
+                                  category: questionCategoryController,
+                                  difficulty:
+                                      questionDifficultyController == 'random'
+                                          ? null
+                                          : questionDifficultyController,
+                                  type: toggleButtonsList[0]
+                                      ? 'boolean'
+                                      : toggleButtonsList[1]
+                                          ? 'multiple'
+                                          : null,
+                                );
+                              },
+                            ),
+                          );
                         }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).focusColor,
-                        fixedSize:
-                            Size(MediaQuery.of(context).size.width - 60, 50),
+                        fixedSize: Size(
+                          MediaQuery.of(context).size.width - 60,
+                          50,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7),
                         ),
@@ -316,5 +159,180 @@ class _ConfigPageState extends State<ConfigPage> {
         ),
       ),
     );
+  }
+
+  Widget difficultyWidget() {
+    return DropdownButtonFormField(
+        style: const TextStyle(
+          fontSize: 14,
+          height: 1,
+        ),
+        value: questionDifficultyController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          constraints: BoxConstraints(maxHeight: 60),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20),
+        ),
+        items: const [
+          DropdownMenuItem(
+            value: 'random',
+            child: Text('Random'),
+          ),
+          DropdownMenuItem(
+            value: 'easy',
+            child: Text('Easy'),
+          ),
+          DropdownMenuItem(
+            value: 'medium',
+            child: Text('Medium'),
+          ),
+          DropdownMenuItem(
+            value: 'hard',
+            child: Text('Hard'),
+          ),
+        ],
+        onChanged: (value) {
+          if (value != null) {
+            setState(() {
+              questionDifficultyController = value;
+            });
+          }
+        });
+  }
+
+  Widget typeWidget() {
+    return ToggleButtons(
+      fillColor: Theme.of(context).primaryColorLight,
+      isSelected: toggleButtonsList,
+      borderRadius: BorderRadius.circular(7),
+      selectedColor: Colors.black,
+      constraints: const BoxConstraints(
+        minWidth: 80,
+        minHeight: 40,
+      ),
+      onPressed: (bid) {
+        setState(() {
+          toggleButtonsList = List.from([false, false, false]);
+          toggleButtonsList[bid] = true;
+        });
+      },
+      children: const [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text('True or False'),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text('Multiple Choice'),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text('Any'),
+        ),
+      ],
+    );
+  }
+
+  Widget categoriesWidget() {
+    return DropdownButtonFormField(
+        style: const TextStyle(
+          fontSize: 14,
+          height: 1,
+        ),
+        value: questionCategoryController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          constraints: BoxConstraints(maxHeight: 60),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20),
+        ),
+        items: const [
+          DropdownMenuItem(
+            value: null,
+            child: Text('Any category'),
+          ),
+          DropdownMenuItem(
+            value: 9,
+            child: Text('General Knowledge'),
+          ),
+          DropdownMenuItem(
+            value: 10,
+            child: Text('Entertainment Books'),
+          ),
+          DropdownMenuItem(
+            value: 11,
+            child: Text('Entertainment Film'),
+          ),
+          DropdownMenuItem(
+            value: 12,
+            child: Text('Entertainment Music'),
+          ),
+          DropdownMenuItem(
+            value: 13,
+            child: Text('Entertainment Musicals and Theatres'),
+          ),
+          DropdownMenuItem(
+            value: 14,
+            child: Text('Entertainment Television'),
+          ),
+          DropdownMenuItem(
+            value: 15,
+            child: Text('Entertainment Video Games'),
+          ),
+          DropdownMenuItem(
+            value: 16,
+            child: Text('Entertainment Board Games'),
+          ),
+          DropdownMenuItem(
+            value: 17,
+            child: Text('Science and Nature'),
+          ),
+          DropdownMenuItem(
+            value: 18,
+            child: Text('Science: Computers'),
+          ),
+          DropdownMenuItem(
+            value: 19,
+            child: Text('Science: Mathematics'),
+          ),
+          DropdownMenuItem(
+            value: 20,
+            child: Text('Mythology'),
+          ),
+          DropdownMenuItem(
+            value: 21,
+            child: Text('Sports'),
+          ),
+          DropdownMenuItem(
+            value: 22,
+            child: Text('Geography'),
+          ),
+          DropdownMenuItem(
+            value: 22,
+            child: Text('Geography'),
+          ),
+          DropdownMenuItem(
+            value: 23,
+            child: Text('History'),
+          ),
+          DropdownMenuItem(
+            value: 24,
+            child: Text('Politics'),
+          ),
+          DropdownMenuItem(
+            value: 25,
+            child: Text('Art'),
+          ),
+          DropdownMenuItem(
+            value: 26,
+            child: Text('Celebrities'),
+          ),
+          DropdownMenuItem(
+            value: 27,
+            child: Text('Animals'),
+          ),
+        ],
+        onChanged: (value) {
+          questionCategoryController = value;
+        });
   }
 }

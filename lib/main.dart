@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/app/core/inject/inject.dart';
 import 'package:quiz_app/app/features/quiz_app/domain/usecases/get_questions_usecase.dart';
+import 'package:quiz_app/app/features/quiz_app/presentation/controllers/paginate_controller.dart';
 import 'package:quiz_app/app/features/quiz_app/presentation/controllers/quiz_controller.dart';
 import 'package:get_it/get_it.dart';
 import 'package:quiz_app/app/features/quiz_app/presentation/ui/pages/start_page.dart';
@@ -19,7 +20,7 @@ void main() {
       statusBarIconBrightness: Brightness.light,
     ),
   );
-   SystemChrome.setPreferredOrientations([
+  SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
   runApp(
@@ -30,7 +31,9 @@ void main() {
             getQuestionsUsecase: GetIt.I.get<GetQuestionsUsecase>(),
           ),
         ),
-        
+        ChangeNotifierProvider(
+          create: (context) => PaginateController(),
+        ),
       ],
       child: const MyApp(),
     ),

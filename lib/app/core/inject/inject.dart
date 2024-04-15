@@ -14,7 +14,7 @@ class Inject {
     //datasources
 
     getIt.registerLazySingleton<ApiDatasource>(
-        () => ApiDatasourceImpl(client: getIt()));
+        () => ApiDatasourceImpl(httpClient: getIt()));
 
     //repositories
 

@@ -2,13 +2,17 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:provider/provider.dart';
+import 'package:quiz_app/app/features/quiz_app/data/models/questions_model.dart';
+import 'package:quiz_app/app/features/quiz_app/presentation/controllers/paginate_controller.dart';
 import 'package:quiz_app/app/features/quiz_app/presentation/controllers/quiz_controller.dart';
 import 'package:quiz_app/app/features/quiz_app/presentation/ui/components/answers_component.dart';
 import 'package:quiz_app/app/features/quiz_app/presentation/ui/components/question_description_component.dart';
 
 class QuizPageview extends StatefulWidget {
+  final QuestionModel questionModel;
   const QuizPageview({
     super.key,
+    required this.questionModel,
   });
 
   @override
@@ -16,10 +20,12 @@ class QuizPageview extends StatefulWidget {
 }
 
 class _QuizPageviewState extends State<QuizPageview> {
-  late QuizController controller;
+  late PaginateController paginateController;
+  late QuizController quizController;
   @override
   Widget build(BuildContext context) {
-    controller = Provider.of<QuizController>(context);
+    paginateController = Provider.of<PaginateController>(context);
+    quizController = Provider.of<QuizController>(context);
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: Padding(
@@ -29,17 +35,16 @@ class _QuizPageviewState extends State<QuizPageview> {
           children: [
             const Spacer(),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: Theme.of(context).primaryColorLight,
                   width: .7,
-
-                )
+                ),
               ),
               child: Text(
-                parse(controller.getQuestions[controller.currentIndex].question).body?.innerHtml ?? '',
+                parse(widget.questionModel.question).body?.innerHtml ?? '',
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -51,12 +56,16 @@ class _QuizPageviewState extends State<QuizPageview> {
               height: 20,
             ),
             QuestionDescriptionComponent(
-                title: 'Category: ', content: controller.getQuestions[controller.currentIndex].category!),
+              title: 'Category: ',
+              content: widget.questionModel.category!,
+            ),
             const SizedBox(
               height: 5,
             ),
             QuestionDescriptionComponent(
-                title: 'Difficulty: ', content: controller.getQuestions[controller.currentIndex].difficulty!),
+              title: 'Difficulty: ',
+              content: widget.questionModel.difficulty!,
+            ),
             const Spacer(
               flex: 3,
             ),
@@ -67,7 +76,15 @@ class _QuizPageviewState extends State<QuizPageview> {
             ),
             ElevatedButton(
               onPressed: () {
-                controller.submitAnswer(context);
+                quizController.selectedAnswer != null
+                    ? quizController.submitAnswer()
+                    : noAnswerMessage(context);
+                if (paginateController.currentIndex ==
+                    quizController.questions.length - 1) {
+                  paginateController.naviteToFinishPage(context);
+                } else {
+                  paginateController.navigate(quizController.questions.length);
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).focusColor,
@@ -86,4 +103,32 @@ class _QuizPageviewState extends State<QuizPageview> {
       ),
     );
   }
+}
+
+noAnswerMessage(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog.adaptive(
+        content: const Text(
+          'Please answer one of the questions to proceed',
+          style: TextStyle(
+            fontSize: 20,
+            height: 1.2,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'OK',
+              style: TextStyle(height: 0),
+            ),
+          )
+        ],
+      );
+    },
+  );
 }

@@ -37,9 +37,11 @@ class StartPage extends StatelessWidget {
           const Spacer(),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const ConfigPage();
-              }));
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) {
+                  return const ConfigPage();
+                },
+              ));
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).focusColor,
