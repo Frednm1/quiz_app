@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz_app/app/core/inject/inject.dart';
-import 'package:quiz_app/app/features/quiz_app/domain/usecases/get_questions_usecase.dart';
-import 'package:quiz_app/app/features/quiz_app/presentation/controllers/paginate_controller.dart';
-import 'package:quiz_app/app/features/quiz_app/presentation/controllers/quiz_controller.dart';
+import 'package:quiz_app/app/layers/domain/usecase/get_questions_usecase.dart';
+import 'package:quiz_app/app/layers/presentation/controllers/quiz_store.dart';
 import 'package:get_it/get_it.dart';
-import 'package:quiz_app/app/features/quiz_app/presentation/ui/pages/start_page.dart';
+import 'package:quiz_app/app/layers/presentation/ui/pages/start_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,12 +26,9 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => QuizController(
+          create: (context) => QuizStore(
             getQuestionsUsecase: GetIt.I.get<GetQuestionsUsecase>(),
           ),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => PaginateController(),
         ),
       ],
       child: const MyApp(),
